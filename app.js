@@ -36,13 +36,7 @@ let item3 = new Item ({
 
 let defaultItems = [item1, item2, item3];
 
-Item.insertMany(defaultItems, function(err){
-    if (!err) {
-        console.log("Success");
-    } else {
-        console.log(err)
-    }
-});
+
 
 app.use(express.static("directory"));
 
@@ -73,10 +67,19 @@ app.get('/', function(req, res){
     // ^^ WEATHER APP
 
     Item.find({}, function(err, foundItems) {
-        console.log(foundItems);
-        res.render("index", {kindOfDay: day, newItem: foundItems, weatherToday: weather});
+        if (foundItems.length === 0) {
+            Item.insertMany(defaultItems, function(err){
+                if (!err) {
+                    console.log("Success");
+                } else {
+                    console.log(err)
+                }
+            });
+            res.redirect("/")
+        } else {
+            res.render("index", {kindOfDay: day, newItem: foundItems, weatherToday: weather});
+        }        
     });
-
 
     // res.render("index", {kindOfDay: day, newItem: foundItems, weatherToday: weather});
 
@@ -85,11 +88,15 @@ app.get('/', function(req, res){
 });
 
 app.post('/', function(req, res){
-    let newToDo = req.body.newItem;
+    let newTodo = req.body.newItem;
 
-    newToDos.push(newToDo);
+    let item = new Item({
+        name: newTodo
+    });
 
+    item.save();
     res.redirect("/");
+
 });
 
 app.listen(process.env.PORT || 5000);
