@@ -96,7 +96,17 @@ app.post('/', function(req, res){
 
     item.save();
     res.redirect("/");
-
 });
+
+app.post("/delete", function(req, res){
+    let deleteItem = req.body.checkBox
+    Item.findByIdAndRemove(deleteItem, function(err){
+        if (err){
+            console.log(err)
+        } else {
+            res.redirect("/")
+        }
+    })
+})
 
 app.listen(process.env.PORT || 5000);
