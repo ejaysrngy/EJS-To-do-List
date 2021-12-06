@@ -74,10 +74,11 @@ app.get('/', function(req, res){
 
     Item.find({}, function(err, foundItems) {
         console.log(foundItems);
+        res.render("index", {kindOfDay: day, newItem: foundItems, weatherToday: weather});
     });
 
 
-    res.render("index", {kindOfDay: day, newItem: newToDos, weatherToday: weather});
+    // res.render("index", {kindOfDay: day, newItem: foundItems, weatherToday: weather});
 
         });
     }); 
