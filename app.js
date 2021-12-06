@@ -22,6 +22,7 @@ const Item = mongoose.model(
     itemsSchema
 );
 
+// DEFAULT ITEMS
 let item1 = new Item ({
     name: "Welcome to your To-do List"
 });
@@ -34,9 +35,14 @@ let item3 = new Item ({
     name: "Tick the box to delete"
 });
 
-let defaultItems = [item1, item2, item3];
+let item4 = new Item ({
+    name: "Check the weather down below"
+});
 
 
+let defaultItems = [item1, item2, item3, item4];
+
+//DEFAULT ITEMS
 
 app.use(express.static("directory"));
 
@@ -70,7 +76,7 @@ app.get('/', function(req, res){
         if (foundItems.length === 0) {
             Item.insertMany(defaultItems, function(err){
                 if (!err) {
-                    console.log("Success");
+                    console.log("Add default items");
                 } else {
                     console.log(err)
                 }
